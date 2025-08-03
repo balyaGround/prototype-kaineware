@@ -1,130 +1,159 @@
 import { useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import { Button, Form, Table } from "react-bootstrap";
+import { Form, Button, Table } from "react-bootstrap";
 
 const BarangMasukAdmin = () => {
+  const [dataMasuk, setDataMasuk] = useState([]);
   const [form, setForm] = useState({
     tanggal: "",
+    gudang: "",
     kodeBarang: "",
     namaBarang: "",
-    jumlahRol: "",
-    beratPerRol: "",
-    gudangAsal: "",
+    beratPerRoll: [""],
   });
 
-  const [data, setData] = useState([]);
-
-  const handleChange = (e) => {
+  const handleInput = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSimpan = () => {
-    if (!form.kodeBarang || !form.namaBarang) return alert("Kode & Nama wajib diisi");
-    setData([...data, { ...form }]);
+  const handleBeratChange = (index, value) => {
+    const updatedBerat = [...form.beratPerRoll];
+    updatedBerat[index] = value;
+    setForm({ ...form, beratPerRoll: updatedBerat });
+  };
+
+  const handleAddBerat = () => {
+    setForm({ ...form, beratPerRoll: [...form.beratPerRoll, ""] });
+  };
+
+  const handleSubmit = () => {
+    if (!form.kodeBarang || !form.tanggal || !form.gudang) {
+      alert("Harap lengkapi semua field wajib.");
+      return;
+    }
+
+    // Validasi hanya berat yang bukan kosong & angka
+    const beratValid = form.beratPerRoll.filter(
+      (b) => b !== "" && !isNaN(parseFloat(b))
+    );
+
+    const totalBerat = beratValid.reduce((sum, b) => sum + parseFloat(b), 0);
+
+    setDataMasuk([
+      ...dataMasuk,
+      {
+        ...form,
+        beratPerRoll: beratValid,
+        jumlahRoll: beratValid.length,
+        totalBerat: totalBerat.toFixed(2),
+      },
+    ]);
+
     setForm({
       tanggal: "",
+      gudang: "",
       kodeBarang: "",
       namaBarang: "",
-      jumlahRol: "",
-      beratPerRol: "",
-      gudangAsal: "",
+      beratPerRoll: [""],
     });
   };
 
   return (
     <div>
       <Header />
-      <div className="container my-4" style={{ minHeight: "60vh" }}>
+      <div className="container my-4">
         <h4>Input Barang Masuk</h4>
 
         <div className="row mb-3">
-          <div className="col-md-2">
+          <div className="col-md-3">
             <Form.Label>Tanggal</Form.Label>
             <Form.Control
               type="date"
               name="tanggal"
               value={form.tanggal}
-              onChange={handleChange}
+              onChange={handleInput}
             />
           </div>
-          <div className="col-md-2">
-            <Form.Label>Kode Barang</Form.Label>
-            <Form.Control
-              name="kodeBarang"
-              value={form.kodeBarang}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="col-md-2">
-            <Form.Label>Nama Barang</Form.Label>
-            <Form.Control
-              name="namaBarang"
-              value={form.namaBarang}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="col-md-2">
-            <Form.Label>Jumlah Rol</Form.Label>
-            <Form.Control
-              type="number"
-              name="jumlahRol"
-              value={form.jumlahRol}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="col-md-2">
-            <Form.Label>Berat per Rol (kg)</Form.Label>
-            <Form.Control
-              type="number"
-              step="0.01"
-              name="beratPerRol"
-              value={form.beratPerRol}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="col-md-2">
+          <div className="col-md-3">
             <Form.Label>Gudang Asal</Form.Label>
             <Form.Select
-              name="gudangAsal"
-              value={form.gudangAsal}
-              onChange={handleChange}
+              name="gudang"
+              value={form.gudang}
+              onChange={handleInput}
             >
-              <option value="">Pilih</option>
+              <option value="">Pilih Gudang</option>
               <option value="Cideng">Cideng</option>
               <option value="AA17">AA17</option>
               <option value="A38">A38</option>
             </Form.Select>
           </div>
+          <div className="col-md-3">
+            <Form.Label>Kode Barang</Form.Label>
+            <Form.Control
+              name="kodeBarang"
+              value={form.kodeBarang}
+              onChange={handleInput}
+            />
+          </div>
+          <div className="col-md-3">
+            <Form.Label>Nama Barang</Form.Label>
+            <Form.Control
+              name="namaBarang"
+              value={form.namaBarang}
+              onChange={handleInput}
+            />
+          </div>
         </div>
 
-        <Button onClick={handleSimpan}>Simpan</Button>
+        <div className="mb-3">
+          <Form.Label>Berat per Roll (kg)</Form.Label>
+          {form.beratPerRoll.map((b, idx) => (
+            <div key={idx} className="d-flex gap-2 mb-2">
+              <Form.Control
+                type="number"
+                step="0.01"
+                value={b}
+                onChange={(e) => handleBeratChange(idx, e.target.value)}
+              />
+              {idx === form.beratPerRoll.length - 1 && (
+                <Button variant="secondary" onClick={handleAddBerat}>
+                  + Tambah Roll
+                </Button>
+              )}
+            </div>
+          ))}
+        </div>
+
+        <Button onClick={handleSubmit}>Simpan Data</Button>
 
         <h5 className="mt-4">Riwayat Barang Masuk</h5>
-        <Table striped bordered>
+        <Table striped bordered hover>
           <thead>
             <tr>
-              <th>#</th>
               <th>Tanggal</th>
-              <th>Kode</th>
-              <th>Nama</th>
-              <th>Jumlah Rol</th>
-              <th>Berat/Rol</th>
-              <th>Total Berat</th>
               <th>Gudang</th>
+              <th>Kode</th>
+              <th>Nama Barang</th>
+              <th>Jumlah Roll</th>
+              <th>Rincian Berat</th>
+              <th>Total Berat (kg)</th>
             </tr>
           </thead>
           <tbody>
-            {data.map((item, idx) => (
+            {dataMasuk.map((item, idx) => (
               <tr key={idx}>
-                <td>{idx + 1}</td>
                 <td>{item.tanggal}</td>
+                <td>{item.gudang}</td>
                 <td>{item.kodeBarang}</td>
                 <td>{item.namaBarang}</td>
-                <td>{item.jumlahRol}</td>
-                <td>{item.beratPerRol}</td>
-                <td>{(item.jumlahRol * item.beratPerRol).toFixed(2)}</td>
-                <td>{item.gudangAsal}</td>
+                <td>{item.jumlahRoll}</td>
+                <td>
+                  {item.beratPerRoll
+                    .map((b) => parseFloat(b).toFixed(2))
+                    .join(", ")}
+                </td>
+                <td>{item.totalBerat} Kg</td>
               </tr>
             ))}
           </tbody>
