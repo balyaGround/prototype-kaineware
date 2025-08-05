@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect, useContext } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "../firebase/config";
 import { doc, getDoc } from "firebase/firestore";
@@ -7,43 +7,51 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
-const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
 
- useEffect(() => {
-  const unsub = onAuthStateChanged(auth, async (user) => {
-    if (user) {
-      try {
-        const docSnap = await getDoc(doc(db, "users", user.uid));
-        if (docSnap.exists()) {
-          const data = docSnap.data();
-          setCurrentUser({
-            uid: user.uid,
-            email: user.email,
-            displayName: data.nama || user.displayName || "Anonim",
-            role: data.role,
-            gudangAkses: data.gudangAkses || []
-          });
-        } else {
+  useEffect(() => {
+    const unsub = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        try {
+          const docSnap = await getDoc(doc(db, "users", user.uid));
+          if (docSnap.exists()) {
+            const data = docSnap.data();
+            setCurrentUser({
+              uid: user.uid,
+              email: user.email,
+              displayName: data.nama || user.displayName || "Anonim",
+              role: data.role,
+              gudangAkses: data.gudangAkses || [],
+            });
+          } else {
+            setCurrentUser(null);
+          }
+        } catch {
           setCurrentUser(null);
         }
-      } catch {
+      } else {
         setCurrentUser(null);
       }
-    } else {
-      setCurrentUser(null);
-    }
-    setLoading(false);
-  });
+      setLoading(false);
+    });
 
-  return () => unsub();
-}, []);
+    return () => unsub();
+  }, []);
 
   const logout = () => auth.signOut();
 
   return (
     <AuthContext.Provider value={{ currentUser, logout, loading }}>
-
       {children}
     </AuthContext.Provider>
   );
+};
+
+// Custom hook untuk memudahkan penggunaan AuthContext
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error("useAuth must be used within an AuthProvider");
+  }
+  return context;
 };

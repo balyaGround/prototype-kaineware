@@ -79,7 +79,6 @@ const BarangMasukAdmin = () => {
               onChange={handleInput}
             >
               <option value="">Pilih Gudang</option>
-              <option value="Cideng">Cideng</option>
               <option value="AA17">AA17</option>
               <option value="A38">A38</option>
             </Form.Select>

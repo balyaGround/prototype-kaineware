@@ -7,24 +7,21 @@ const dummyData = [
     nama: "Kain Tebal",
     jenis: "Tebal",
     warna: "Merah",
-    hargaRol: 150000,
-    hargaKg: 120000,
+    beratRol: "20,82",
   },
   {
     kode: "SJR-X01",
     nama: "Sutra Jepang",
     jenis: "Sutra",
     warna: "Biru",
-    hargaRol: 80000,
-    hargaKg: 100000,
+    beratRol: "36,4",
   },
   {
     kode: "KTN-123",
     nama: "Katun",
     jenis: "Katun",
     warna: "Putih",
-    hargaRol: 90000,
-    hargaKg: 110000,
+    beratRol: "33,9",
   },
 ];
 
@@ -37,8 +34,7 @@ const ManajemenBarang = () => {
     nama: "",
     jenis: "",
     warna: "",
-    hargaRol: "",
-    hargaKg: "",
+    beratRol: "",
   });
 
   const handleInputChange = (e) => {
@@ -49,8 +45,7 @@ const ManajemenBarang = () => {
     if (!form.kode || !form.nama) return alert("Kode dan nama wajib diisi");
     const barangBaru = {
       ...form,
-      hargaRol: Number(form.hargaRol),
-      hargaKg: Number(form.hargaKg),
+      beratRol: Number(form.beratRol),
     };
     setBarangList([...barangList, barangBaru]);
     setForm({
@@ -58,8 +53,7 @@ const ManajemenBarang = () => {
       nama: "",
       jenis: "",
       warna: "",
-      hargaRol: "",
-      hargaKg: "",
+      beratRol: "",
     });
   };
 
@@ -77,7 +71,7 @@ const ManajemenBarang = () => {
         <h4>Manajemen Barang</h4>
 
         {/* Filter */}
-        <div className="row mb-4">
+        {/* <div className="row mb-4">
           <div className="col-md-3">
             <Form.Label>Filter Jenis</Form.Label>
             <Form.Control
@@ -94,10 +88,9 @@ const ManajemenBarang = () => {
               placeholder="Contoh: Merah"
             />
           </div>
-        </div>
+        </div> */}
 
         {/* Form Tambah Barang */}
-        <h5>Tambah / Edit Barang</h5>
         <div className="row mb-3">
           <div className="col-md-2">
             <Form.Label>Kode</Form.Label>
@@ -116,14 +109,6 @@ const ManajemenBarang = () => {
             />
           </div>
           <div className="col-md-2">
-            <Form.Label>Jenis</Form.Label>
-            <Form.Control
-              name="jenis"
-              value={form.jenis}
-              onChange={handleInputChange}
-            />
-          </div>
-          <div className="col-md-2">
             <Form.Label>Warna</Form.Label>
             <Form.Control
               name="warna"
@@ -132,25 +117,16 @@ const ManajemenBarang = () => {
             />
           </div>
           <div className="col-md-2">
-            <Form.Label>Harga/Rol</Form.Label>
+            <Form.Label>Berat/Rol</Form.Label>
             <Form.Control
-              name="hargaRol"
+              name="beratRol"
               type="number"
-              value={form.hargaRol}
-              onChange={handleInputChange}
-            />
-          </div>
-          <div className="col-md-2">
-            <Form.Label>Harga/Kg</Form.Label>
-            <Form.Control
-              name="hargaKg"
-              type="number"
-              value={form.hargaKg}
+              value={form.beratRol}
               onChange={handleInputChange}
             />
           </div>
         </div>
-        <Button onClick={handleSubmit}>Simpan Barang</Button>
+        <Button onClick={handleSubmit}>Input Barang</Button>
 
         {/* Tabel Daftar Barang */}
         <h5 className="mt-4">Daftar Barang</h5>
@@ -160,9 +136,7 @@ const ManajemenBarang = () => {
               <th>Kode</th>
               <th>Nama</th>
               <th>Jenis</th>
-              <th>Warna</th>
-              <th>Harga/Rol</th>
-              <th>Harga/Kg</th>
+              <th>Berat/Rol</th>
             </tr>
           </thead>
           <tbody>
@@ -170,10 +144,8 @@ const ManajemenBarang = () => {
               <tr key={idx}>
                 <td>{item.kode}</td>
                 <td>{item.nama}</td>
-                <td>{item.jenis}</td>
                 <td>{item.warna}</td>
-                <td>{item.hargaRol.toLocaleString()}</td>
-                <td>{item.hargaKg.toLocaleString()}</td>
+                <td>{item.beratRol.toLocaleString()} Kg</td>
               </tr>
             ))}
           </tbody>
