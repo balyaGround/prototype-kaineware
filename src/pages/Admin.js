@@ -4,9 +4,9 @@ import Footer from "../components/Footer";
 import { Card, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-const DashboardAdmin = () => {
+const DashboardAdmins = () => {
   return (
-    <div >
+    <div>
       <Header />
       <div className="container my-4 " style={{ minHeight: "60vh" }}>
         <h4>Selamat Datang</h4>
@@ -53,4 +53,4 @@ const DashboardAdmin = () => {
   );
 };
 
-export default DashboardAdmin;
+export default DashboardAdmins;

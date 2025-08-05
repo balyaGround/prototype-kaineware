@@ -1,12 +1,31 @@
 import { useState } from "react";
 import { Button, Form, Table } from "react-bootstrap";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
 
 const dummyData = [
-  { kode: "TLB-K01", nama: "Kain Tebal", jenis: "Tebal", warna: "Merah", hargaRol: 150000, hargaKg: 120000 },
-  { kode: "SJR-X01", nama: "Sutra Jepang", jenis: "Sutra", warna: "Biru", hargaRol: 80000, hargaKg: 100000 },
-  { kode: "KTN-123", nama: "Katun", jenis: "Katun", warna: "Putih", hargaRol: 90000, hargaKg: 110000 },
+  {
+    kode: "TLB-K01",
+    nama: "Kain Tebal",
+    jenis: "Tebal",
+    warna: "Merah",
+    hargaRol: 150000,
+    hargaKg: 120000,
+  },
+  {
+    kode: "SJR-X01",
+    nama: "Sutra Jepang",
+    jenis: "Sutra",
+    warna: "Biru",
+    hargaRol: 80000,
+    hargaKg: 100000,
+  },
+  {
+    kode: "KTN-123",
+    nama: "Katun",
+    jenis: "Katun",
+    warna: "Putih",
+    hargaRol: 90000,
+    hargaKg: 110000,
+  },
 ];
 
 const ManajemenBarang = () => {
@@ -34,17 +53,26 @@ const ManajemenBarang = () => {
       hargaKg: Number(form.hargaKg),
     };
     setBarangList([...barangList, barangBaru]);
-    setForm({ kode: "", nama: "", jenis: "", warna: "", hargaRol: "", hargaKg: "" });
+    setForm({
+      kode: "",
+      nama: "",
+      jenis: "",
+      warna: "",
+      hargaRol: "",
+      hargaKg: "",
+    });
   };
 
-  const filteredBarang = barangList.filter((b) =>
-    (filterJenis === "" || b.jenis.toLowerCase().includes(filterJenis.toLowerCase())) &&
-    (filterWarna === "" || b.warna.toLowerCase().includes(filterWarna.toLowerCase()))
+  const filteredBarang = barangList.filter(
+    (b) =>
+      (filterJenis === "" ||
+        b.jenis.toLowerCase().includes(filterJenis.toLowerCase())) &&
+      (filterWarna === "" ||
+        b.warna.toLowerCase().includes(filterWarna.toLowerCase()))
   );
 
   return (
     <div className="page-container">
-      <Header />
       <div className="container page-content my-4">
         <h4>Manajemen Barang</h4>
 
@@ -71,12 +99,56 @@ const ManajemenBarang = () => {
         {/* Form Tambah Barang */}
         <h5>Tambah / Edit Barang</h5>
         <div className="row mb-3">
-          <div className="col-md-2"><Form.Label>Kode</Form.Label><Form.Control name="kode" value={form.kode} onChange={handleInputChange} /></div>
-          <div className="col-md-2"><Form.Label>Nama</Form.Label><Form.Control name="nama" value={form.nama} onChange={handleInputChange} /></div>
-          <div className="col-md-2"><Form.Label>Jenis</Form.Label><Form.Control name="jenis" value={form.jenis} onChange={handleInputChange} /></div>
-          <div className="col-md-2"><Form.Label>Warna</Form.Label><Form.Control name="warna" value={form.warna} onChange={handleInputChange} /></div>
-          <div className="col-md-2"><Form.Label>Harga/Rol</Form.Label><Form.Control name="hargaRol" type="number" value={form.hargaRol} onChange={handleInputChange} /></div>
-          <div className="col-md-2"><Form.Label>Harga/Kg</Form.Label><Form.Control name="hargaKg" type="number" value={form.hargaKg} onChange={handleInputChange} /></div>
+          <div className="col-md-2">
+            <Form.Label>Kode</Form.Label>
+            <Form.Control
+              name="kode"
+              value={form.kode}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div className="col-md-2">
+            <Form.Label>Nama</Form.Label>
+            <Form.Control
+              name="nama"
+              value={form.nama}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div className="col-md-2">
+            <Form.Label>Jenis</Form.Label>
+            <Form.Control
+              name="jenis"
+              value={form.jenis}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div className="col-md-2">
+            <Form.Label>Warna</Form.Label>
+            <Form.Control
+              name="warna"
+              value={form.warna}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div className="col-md-2">
+            <Form.Label>Harga/Rol</Form.Label>
+            <Form.Control
+              name="hargaRol"
+              type="number"
+              value={form.hargaRol}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div className="col-md-2">
+            <Form.Label>Harga/Kg</Form.Label>
+            <Form.Control
+              name="hargaKg"
+              type="number"
+              value={form.hargaKg}
+              onChange={handleInputChange}
+            />
+          </div>
         </div>
         <Button onClick={handleSubmit}>Simpan Barang</Button>
 
@@ -107,7 +179,6 @@ const ManajemenBarang = () => {
           </tbody>
         </Table>
       </div>
-      <Footer />
     </div>
   );
 };

@@ -8,7 +8,8 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
 
   if (loading) return <p className="text-center mt-5">Loading...</p>;
   if (!currentUser) return <Navigate to="/" replace />;
-  if (!allowedRoles.includes(currentUser.role)) return <Navigate to="/" replace />;
+  if (!allowedRoles.includes(currentUser.role))
+    return <Navigate to="/" replace />;
 
   return children;
 };

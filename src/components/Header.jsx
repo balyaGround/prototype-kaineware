@@ -24,13 +24,7 @@ const Header = () => {
   return (
     <div className="d-flex justify-content-between align-items-center bg-info border-bottom px-4 py-3 shadow-sm mb-5">
       <div className="d-flex align-items-center gap-3">
-        <button
-          className="btn btn-outline-light btn-sm"
-          onClick={() => navigate(-1)}
-        >
-          ⬅ Kembali
-        </button>
-        <h5 className="mb-0">📊 Dashboard KaineWare</h5>
+        <h5 className="mb-0">Dashboard KaineWare</h5>
       </div>
 
       <div className="d-flex align-items-center gap-3">
@@ -38,7 +32,7 @@ const Header = () => {
           <div className="fw-semibold">
             {greet}, {nama} 👋
           </div>
-          <small className="text-muted text-capitalize">{role}</small>
+          <small className="badge bg-secondary me-2">{role}</small>
         </div>
         <img
           src={`https://ui-avatars.com/api/?name=${nama}&background=random`}

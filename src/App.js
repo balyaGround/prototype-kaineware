@@ -1,4 +1,9 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./routes/ProtectedRoute";
 
@@ -8,13 +13,10 @@ import LoginPage from "./pages/LoginPage";
 // Halaman Kasir
 import Kasir from "./pages/Kasir";
 
-// Halaman Dashboard admin
-import DashboardAdmin from "./pages/Admin";
-
 // Layout Dashboard
 import DashboardLayout from "./layouts/DashboardLayout";
-
-// Halaman dalam Dashboard Owner/Admin
+import AdminLayout from "./layouts/AdminLayout";
+// Halaman dalam Dashboard Owner
 import Ringkasan from "./pages/Ringkasan";
 import Penjualan from "./pages/Penjualan";
 import Stok from "./pages/Stok";
@@ -23,6 +25,9 @@ import Mutasi from "./pages/Mutasi";
 import Aktivitas from "./pages/Aktivitas";
 import Nota from "./pages/Nota";
 import User from "./pages/User";
+
+// Halaman Admin
+import DashboardAdmin from "./pages/AdminDashboard";
 import ManajemenBarang from "./pages/ManajemenBarang";
 import BarangMasukAdmin from "./pages/BarangmasukAdmin";
 import MutasiGudangAdmin from "./pages/MutasigudangAdmin";
@@ -32,7 +37,6 @@ function App() {
     <AuthProvider>
       <Router>
         <Routes>
-
           {/* Login Page */}
           <Route path="/" element={<LoginPage />} />
 
@@ -46,42 +50,29 @@ function App() {
             }
           />
 
-          {/* Halaman dashboard admin*/}
-          <Route path="/dashboardAdmin" element={
-            <ProtectedRoute allowedRoles={["admin"]}>
-              <DashboardAdmin />
-            </ProtectedRoute>
-            } 
-          />
-           <Route
-              path="ManajemenBarang"
-              element={
-                <ProtectedRoute allowedRoles={["admin"]}>
-                  < ManajemenBarang />
-                </ProtectedRoute>
-              }
-            />
-           <Route
-              path="BarangMasukAdmin"
-              element={
-                <ProtectedRoute allowedRoles={["admin"]}>
-                  <BarangMasukAdmin />
-                </ProtectedRoute>
-              }
-            />
-           <Route
-              path="MutasigudangAdmin"
-              element={
-                <ProtectedRoute allowedRoles={["admin"]}>
-                  <MutasiGudangAdmin />
-                </ProtectedRoute>
-              }
-            />
-          {/* Dashboard Layout untuk Owner & Admin */}
+          {/* Admin Layout dengan Sidebar */}
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute allowedRoles={["admin"]}>
+                <AdminLayout />
+              </ProtectedRoute>
+            }
+          >
+            {/* Redirect default: /admin → /admin/dashboard */}
+            <Route index element={<Navigate to="dashboard" replace />} />
+
+            <Route path="dashboard" element={<DashboardAdmin />} />
+            <Route path="manajemen-barang" element={<ManajemenBarang />} />
+            <Route path="barang-masuk" element={<BarangMasukAdmin />} />
+            <Route path="mutasi-gudang" element={<MutasiGudangAdmin />} />
+          </Route>
+
+          {/* Dashboard Layout untuk Owner */}
           <Route
             path="/dashboard"
             element={
-              <ProtectedRoute allowedRoles={["owner", "admin"]}>
+              <ProtectedRoute allowedRoles={["owner"]}>
                 <DashboardLayout />
               </ProtectedRoute>
             }
@@ -90,72 +81,16 @@ function App() {
             <Route index element={<Navigate to="ringkasan" replace />} />
 
             {/* Halaman Khusus Owner */}
-            <Route
-              path="ringkasan"
-              element={
-                <ProtectedRoute allowedRoles={["owner"]}>
-                  <Ringkasan />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="penjualan"
-              element={
-                <ProtectedRoute allowedRoles={["owner"]}>
-                  <Penjualan />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="stok"
-              element={
-                <ProtectedRoute allowedRoles={["owner"]}>
-                  <Stok />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="nota"
-              element={
-                <ProtectedRoute allowedRoles={["owner"]}>
-                  <Nota />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="user"
-              element={
-                <ProtectedRoute allowedRoles={["owner"]}>
-                  <User />
-                </ProtectedRoute>
-              }
-            />
+            <Route path="ringkasan" element={<Ringkasan />} />
+            <Route path="penjualan" element={<Penjualan />} />
+            <Route path="stok" element={<Stok />} />
+            <Route path="nota" element={<Nota />} />
+            <Route path="user" element={<User />} />
 
-            {/* Halaman Untuk Admin & Owner */}
-            <Route
-              path="barang-masuk"
-              element={
-                <ProtectedRoute allowedRoles={["admin", "owner"]}>
-                  <BarangMasuk />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="mutasi"
-              element={
-                <ProtectedRoute allowedRoles={["admin", "owner"]}>
-                  <Mutasi />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="aktivitas"
-              element={
-                <ProtectedRoute allowedRoles={["admin", "owner"]}>
-                  <Aktivitas />
-                </ProtectedRoute>
-              }
-            />
+            {/* Halaman Untuk Admin & Owner - sekarang hanya untuk Owner */}
+            <Route path="barang-masuk" element={<BarangMasuk />} />
+            <Route path="mutasi" element={<Mutasi />} />
+            <Route path="aktivitas" element={<Aktivitas />} />
           </Route>
         </Routes>
       </Router>

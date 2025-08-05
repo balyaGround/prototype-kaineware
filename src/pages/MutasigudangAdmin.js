@@ -1,6 +1,4 @@
 import { useState } from "react";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
 import { Form, Button, Table } from "react-bootstrap";
 
 const MutasiGudangAdmin = () => {
@@ -65,7 +63,6 @@ const MutasiGudangAdmin = () => {
   };
   return (
     <div>
-      <Header />
       <div className="container my-4">
         <h4>Mutasi Gudang</h4>
 
@@ -177,7 +174,6 @@ const MutasiGudangAdmin = () => {
           </tbody>
         </Table>
       </div>
-      <Footer />
     </div>
   );
 };

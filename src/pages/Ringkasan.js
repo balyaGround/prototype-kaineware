@@ -1,5 +1,4 @@
-import React from 'react';
-import { Container, Row, Col, Card } from 'react-bootstrap';
+import { Container, Row, Col, Card } from "react-bootstrap";
 
 const Ringkasan = () => {
   return (
@@ -40,7 +39,9 @@ const Ringkasan = () => {
           <Card>
             <Card.Body>
               <Card.Title>Grafik Penjualan Bulanan</Card.Title>
-              <div className="bg-light text-center py-5">[Grafik Placeholder]</div>
+              <div className="bg-light text-center py-5">
+                [Grafik Placeholder]
+              </div>
             </Card.Body>
           </Card>
         </Col>

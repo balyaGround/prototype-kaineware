@@ -1,6 +1,4 @@
 import { useState } from "react";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
 import { Form, Button, Table } from "react-bootstrap";
 
 const BarangMasukAdmin = () => {
@@ -61,10 +59,8 @@ const BarangMasukAdmin = () => {
 
   return (
     <div>
-      <Header />
       <div className="container my-4">
         <h4>Input Barang Masuk</h4>
-
         <div className="row mb-3">
           <div className="col-md-3">
             <Form.Label>Tanggal</Form.Label>
@@ -159,7 +155,6 @@ const BarangMasukAdmin = () => {
           </tbody>
         </Table>
       </div>
-      <Footer />
     </div>
   );
 };
